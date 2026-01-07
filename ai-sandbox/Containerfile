@@ -42,20 +42,15 @@ RUN apt-get update && apt-get install -y \
     libcurl4 \
     && rm -rf /var/lib/apt/lists/*
 
-# Create app directory
 WORKDIR /app
 
-# Copy server binary from builder stage
 COPY --from=builder /opt/llama.cpp/build/bin/llama-server /opt/llama.cpp/server
 
-# Copy entrypoint
 COPY entrypoint.sh /app/entrypoint.sh
 RUN chmod +x /app/entrypoint.sh
 
-# Create models directory (host-mounted)
 RUN mkdir -p /app/models
 
 EXPOSE 8080
-
 
 ENTRYPOINT ["/app/entrypoint.sh"]
