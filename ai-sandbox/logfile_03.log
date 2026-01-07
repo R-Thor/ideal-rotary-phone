@@ -1,0 +1,177 @@
+[1/2] STEP 1/10: FROM ubuntu:22.04 AS builder
+[1/2] STEP 2/10: ENV DEBIAN_FRONTEND=noninteractive
+--> Using cache 8cac36a2cd73a8a73de207977d29bf7d97dae55090fc433098cb8da29937ffee
+--> 8cac36a2cd73
+[1/2] STEP 3/10: RUN apt-get update &&     apt-get install -y --no-install-recommends         build-essential         git         cmake         wget         ca-certificates         libopenblas-dev         libomp-dev         libcurl4-openssl-dev         python3 &&     rm -rf /var/lib/apt/lists/*
+--> Using cache ab3394427eb6914d6afc7e1e0fadb4bcb7f1a16602f2f9163e95fc69ea2df14c
+--> ab3394427eb6
+[1/2] STEP 4/10: WORKDIR /opt
+--> Using cache 8b68205b2df9bd4be84851ff214e6ba34b8f41723dfc54989b1578e5c91175e8
+--> 8b68205b2df9
+[1/2] STEP 5/10: RUN git clone https://github.com/ggerganov/llama.cpp.git
+--> Using cache e8af25ace7d6af85529910f6fd30fa5cb183bcc156d5974882890df6e004d5d1
+--> e8af25ace7d6
+[1/2] STEP 6/10: WORKDIR /opt/llama.cpp
+--> Using cache d68eb366987a29372255918c1d0a374de93820328c3bf65bb46f32fde874250a
+--> d68eb366987a
+[1/2] STEP 7/10: RUN cmake -B build -S . -DLLAMA_BUILD_SERVER=ON
+--> Using cache 0ebc003ae6bdc173ea2a3bf988404bb11be567c9cb30cf7e713690739bd9fc1b
+--> 0ebc003ae6bd
+[1/2] STEP 8/10: RUN cmake --build build --config Release -j
+--> Using cache acfa326e6b1f4b608f7b862b3a13a0fe88799427c57c8d0f9de0a73836da72c8
+--> acfa326e6b1f
+[1/2] STEP 9/10: RUN ls -R /opt/llama.cpp/build/bin
+/opt/llama.cpp/build/bin:
+libggml-base.so
+libggml-base.so.0
+libggml-base.so.0.9.5
+libggml-cpu.so
+libggml-cpu.so.0
+libggml-cpu.so.0.9.5
+libggml.so
+libggml.so.0
+libggml.so.0.9.5
+libllama.so
+libllama.so.0
+libllama.so.0.0.7666
+libmtmd.so
+libmtmd.so.0
+libmtmd.so.0.0.7666
+llama-batched
+llama-batched-bench
+llama-bench
+llama-cli
+llama-completion
+llama-convert-llama2c-to-ggml
+llama-cvector-generator
+llama-debug
+llama-diffusion-cli
+llama-embedding
+llama-eval-callback
+llama-export-lora
+llama-finetune
+llama-fit-params
+llama-gemma3-cli
+llama-gen-docs
+llama-gguf
+llama-gguf-hash
+llama-gguf-split
+llama-idle
+llama-imatrix
+llama-llava-cli
+llama-lookahead
+llama-lookup
+llama-lookup-create
+llama-lookup-merge
+llama-lookup-stats
+llama-minicpmv-cli
+llama-mtmd-cli
+llama-parallel
+llama-passkey
+llama-perplexity
+llama-q8dot
+llama-quantize
+llama-qwen2vl-cli
+llama-retrieval
+llama-save-load-state
+llama-server
+llama-simple
+llama-simple-chat
+llama-speculative
+llama-speculative-simple
+llama-tokenize
+llama-tts
+llama-vdot
+test-alloc
+test-arg-parser
+test-autorelease
+test-backend-ops
+test-backend-sampler
+test-barrier
+test-c
+test-chat
+test-chat-parser
+test-chat-peg-parser
+test-chat-template
+test-gbnf-validator
+test-gguf
+test-grammar-integration
+test-grammar-parser
+test-json-partial
+test-json-schema-to-grammar
+test-llama-grammar
+test-log
+test-model-load-cancel
+test-mtmd-c-api
+test-opt
+test-peg-parser
+test-quantize-fns
+test-quantize-perf
+test-quantize-stats
+test-regex-partial
+test-rope
+test-sampling
+test-state-restore-fragmented
+test-thread-safety
+test-tokenizer-0
+test-tokenizer-1-bpe
+test-tokenizer-1-spm
+--> 2df6db824ee0
+[1/2] STEP 10/10: RUN find / | grep -i bin$
+find: '/proc/tty/driver': Permission denied
+find: '/proc/acpi': Permission denied
+find: '/proc/scsi': Permission denied
+find: '/sys/kernel/tracing': Permission denied
+find: '/sys/kernel/security': Permission denied
+find: '/sys/kernel/debug': Permission denied
+find: '/sys/kernel/config': Permission denied
+find: '/sys/fs/pstore': Permission denied
+find: '/sys/fs/bpf': Permission denied
+find: '/sys/fs/selinux': Permission denied
+find: '/sys/firmware': Permission denied
+/bin
+/opt/llama.cpp/build/CMakeFiles/3.22.1/CMakeDetermineCompilerABI_C.bin
+/opt/llama.cpp/build/CMakeFiles/3.22.1/CMakeDetermineCompilerABI_CXX.bin
+/opt/llama.cpp/build/CMakeFiles/FindOpenMP/ompver_C.bin
+/opt/llama.cpp/build/CMakeFiles/FindOpenMP/ompver_CXX.bin
+/opt/llama.cpp/build/bin
+/sbin
+/usr/bin
+/usr/lib/llvm-14/bin
+/usr/local/bin
+/usr/local/sbin
+/usr/sbin
+/usr/share/doc/libc-bin
+/usr/share/doc/libpam-modules-bin
+/usr/share/doc/ncurses-bin
+/usr/share/doc/libc-dev-bin
+/usr/share/libc-bin
+/usr/share/lintian/overrides/libc-bin
+/usr/share/lintian/overrides/libpam-modules-bin
+/usr/share/sensible-utils/bin
+--> b30bddc1695b
+[2/2] STEP 1/10: FROM ubuntu:22.04
+[2/2] STEP 2/10: ENV DEBIAN_FRONTEND=noninteractive
+--> Using cache 8cac36a2cd73a8a73de207977d29bf7d97dae55090fc433098cb8da29937ffee
+--> 8cac36a2cd73
+[2/2] STEP 3/10: RUN apt-get update && apt-get install -y     wget     && rm -rf /var/lib/apt/lists/*
+--> Using cache 1017645e2c405ff27bb71108321df58eed27e50d5bdbb49a74ecccd9bcd7b0c1
+--> 1017645e2c40
+[2/2] STEP 4/10: WORKDIR /app
+--> Using cache bd20551b0dec1d3a6807731e8d7edcce1505a0fc2aa93d3aa213ee2a09cd762e
+--> bd20551b0dec
+[2/2] STEP 5/10: COPY --from=builder /opt/llama.cpp/build/bin/llama-server /opt/llama.cpp/server
+--> e5a782c04f25
+[2/2] STEP 6/10: COPY entrypoint.sh /app/entrypoint.sh
+--> 842047d5aed3
+[2/2] STEP 7/10: RUN chmod +x /app/entrypoint.sh
+--> d3f934d709e2
+[2/2] STEP 8/10: RUN mkdir -p /app/models
+--> a45a5b51e1ca
+[2/2] STEP 9/10: EXPOSE 8080
+--> 5fb22cea31b9
+[2/2] STEP 10/10: ENTRYPOINT ["/app/entrypoint.sh"]
+[2/2] COMMIT ai-sandbox
+--> 5f2f103e7390
+Successfully tagged localhost/ai-sandbox:latest
+5f2f103e73907042f0f0d6c0c521e50ac58c7d8066b0fcc143cb3312ae726497
