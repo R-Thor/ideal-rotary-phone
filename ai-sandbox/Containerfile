@@ -11,10 +11,20 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /opt
-RUN git clone https://github.com/ggerganov/llama.cpp && \
-    cd llama.cpp && \
-    git checkout v0.2.82 && \
-    make -j
+
+# Clone llama.cpp
+RUN git clone https://github.com/ggerganov/llama.cpp /opt/llama.cpp
+
+# Build with CMake (new build system)
+RUN mkdir -p /opt/llama.cpp/build && \
+    cd /opt/llama.cpp/build && \
+    cmake .. && \
+    cmake --build . --config Release -j
+
+#RUN git clone https://github.com/ggerganov/llama.cpp && \
+#    cd llama.cpp && \
+#    git checkout v0.2.82 && \
+#    make -j
 
 # Introduce the model here
 WORKDIR /app/models
