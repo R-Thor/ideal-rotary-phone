@@ -5,12 +5,18 @@ FROM ubuntu:22.04 AS builder
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get update && apt-get install -y \
-    git \
-    cmake \
-    build-essential \
-    wget \
-    && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        build-essential \
+        git \
+        cmake \
+        wget \
+        ca-certificates \
+        libopenblas-dev \
+        libomp-dev \
+        libcurl4-openssl-dev \
+        python3 && \
+    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /opt
 
