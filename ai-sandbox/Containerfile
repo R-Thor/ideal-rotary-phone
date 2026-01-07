@@ -28,7 +28,8 @@ WORKDIR /opt/llama.cpp
 # Configure + build the server
 RUN cmake -B build -S . -DLLAMA_BUILD_SERVER=ON
 RUN cmake --build build --config Release -j
-
+RUN ls -R /opt/llama.cpp/build/bin
+RUN find / | grep -i bin$
 # ============================
 # Stage 2 — Runtime image
 # ============================
@@ -44,7 +45,8 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /app
 
 # Copy server binary from builder stage
-COPY --from=builder /opt/llama.cpp/build/bin/server /opt/llama.cpp/server
+#COPY --from=builder /opt/llama.cpp/build/bin/server /opt/llama.cpp/server
+COPY --from=builder /opt/llama.cpp/build/bin/llama-server /opt/llama.cpp/server
 
 # Copy entrypoint
 COPY entrypoint.sh /app/entrypoint.sh
