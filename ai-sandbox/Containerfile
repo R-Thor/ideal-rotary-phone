@@ -25,19 +25,13 @@ RUN mkdir -p /opt/llama.cpp/build && \
     cmake .. && \
     cmake --build . --config Release -j
 
-#RUN git clone https://github.com/ggerganov/llama.cpp && \
-#    cd llama.cpp && \
-#    git checkout v0.2.82 && \
-#    make -j
-
-# Introduce the model here
-WORKDIR /app/models
-RUN wget https://huggingface.co/TheBloke/Llama-2-7B-GGUF/resolve/main/llama-2-7b.Q4_K_M.gguf \
-    -O llama-2-7b.Q4_K_M.gguf
+# Create a mount point for models (models live on Fedora host)
+VOLUME /app/models
 
 WORKDIR /app
-COPY entrypoint.sh .
+COPY entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
 
 EXPOSE 8080
-ENTRYPOINT ["./entrypoint.sh"]
+ENTRYPOINT ["/app/entrypoint.sh"]
 

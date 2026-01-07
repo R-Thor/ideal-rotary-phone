@@ -1,0 +1,10 @@
+services:
+  llama:
+    image: localhost/ai-sandbox:latest
+    container_name: llama-server
+    ports:
+      - "8080:8080"
+    volumes:
+      - ~/models:/app/models
+    restart: unless-stopped
+
