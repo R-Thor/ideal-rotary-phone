@@ -1,0 +1,29 @@
+FROM docker.io/library/ubuntu:24.04
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        build-essential \
+        git \
+        cmake \
+        wget \
+        ca-certificates && \
+    rm -rf /var/lib/apt/lists/*
+
+WORKDIR /opt
+RUN git clone https://github.com/ggerganov/llama.cpp && \
+    cd llama.cpp && \
+    git checkout b9c3d4f && \
+    make -j
+
+# Introduce the model here
+WORKDIR /app/models
+RUN wget https://huggingface.co/TheBloke/Llama-2-7B-GGUF/resolve/main/llama-2-7b.Q4_K_M.gguf \
+    -O llama-2-7b.Q4_K_M.gguf
+
+WORKDIR /app
+COPY entrypoint.sh .
+
+EXPOSE 8080
+ENTRYPOINT ["./entrypoint.sh"]
+
