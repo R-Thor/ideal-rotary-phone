@@ -7,7 +7,11 @@ RUN apt-get update && \
         git \
         cmake \
         wget \
-        ca-certificates && \
+        ca-certificates \
+        libopenblas-dev \
+        libomp-dev \
+        libcurl4-openssl-dev \
+        python3 && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /opt
