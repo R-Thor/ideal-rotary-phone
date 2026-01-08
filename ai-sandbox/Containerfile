@@ -30,6 +30,7 @@ RUN cmake -B build -S . -DLLAMA_BUILD_SERVER=ON
 RUN cmake --build build --config Release -j
 RUN ls -R /opt/llama.cpp/build/bin
 RUN find / | grep -i bin$
+
 # ============================
 # Stage 2 — Runtime image
 # ============================
@@ -44,8 +45,15 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /app
 
+# Copy server binary
 COPY --from=builder /opt/llama.cpp/build/bin/llama-server /opt/llama.cpp/server
 
+# 🔥 Add these here — right after copying the server binary
+COPY --from=builder /opt/llama.cpp/build/bin/libmtmd.so* /usr/lib/
+COPY --from=builder /opt/llama.cpp/build/bin/libggml*.so* /usr/lib/
+COPY --from=builder /opt/llama.cpp/build/bin/libllama*.so* /usr/lib/
+
+# Copy entrypoint
 COPY entrypoint.sh /app/entrypoint.sh
 RUN chmod +x /app/entrypoint.sh
 
@@ -54,3 +62,4 @@ RUN mkdir -p /app/models
 EXPOSE 8080
 
 ENTRYPOINT ["/app/entrypoint.sh"]
+
